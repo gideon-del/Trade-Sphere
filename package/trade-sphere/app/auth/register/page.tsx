@@ -14,8 +14,18 @@ const Register = () => {
     resolver: zodResolver(registerUserSchema),
     mode: "onBlur",
   });
-  const submitHandler = (data: RegisterUser) => {
-    console.log(data);
+  const submitHandler = async (data: RegisterUser) => {
+    try {
+      const user = await fetch("/api/auth/register", {
+        method: "post",
+        body: JSON.stringify({ email: data.email, password: data.password }),
+      });
+      const res = await user.json();
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
   };
   return (
     <main className="">
