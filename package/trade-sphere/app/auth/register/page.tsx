@@ -14,16 +14,45 @@ const Register = () => {
     resolver: zodResolver(registerUserSchema),
     mode: "onBlur",
   });
-
+  const submitHandler = (data: RegisterUser) => {
+    console.log(data);
+  };
   return (
-    <main>
+    <main className="">
       <section className="">
         <h1>Create Account</h1>
-        <form className="">
-          <input placeholder="Name" />
-          <input type="email" placeholder="email" />
-          <input placeholder="Bussiness Name" />
-          <input type="password" placeholder="password" />
+        <form
+          className="grid grid-cols-2 max-w-4xl gap-4"
+          onSubmit={handleSubmit(submitHandler, (err) => console.error(err))}
+        >
+          <input
+            placeholder="Name"
+            className="px-3 py-2 rounded border border-gray-600"
+            {...register("name")}
+          />
+          <input
+            type="email"
+            placeholder="email"
+            className="px-3 py-2 rounded border border-gray-600"
+            {...register("email")}
+          />
+          <input
+            placeholder="Bussiness Name"
+            className="px-3 py-2 rounded border border-gray-600"
+            {...register("bussiness_name")}
+          />
+          <input
+            type="password"
+            placeholder="password"
+            className="px-3 py-2 rounded border border-gray-600"
+            {...register("password")}
+          />
+          <button
+            type="submit"
+            className="bg-red-500 col-span-2 py-2 rounded text-white font-medium"
+          >
+            Submit
+          </button>
         </form>
       </section>
       <section></section>
