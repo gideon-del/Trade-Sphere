@@ -33,8 +33,12 @@ const Register = () => {
         return;
       }
       const { user } = userData;
-      const { password, ...rest } = data;
-      const finalData = await superbase.from("vendor").insert(rest);
+      const { password, bussiness_name, email } = data;
+      const finalData = await superbase.from("vendor").insert({
+        bussiness_name,
+        user_id: user?.id,
+        email,
+      });
       console.log(finalData, user);
     } catch (error) {
       console.log(error);
