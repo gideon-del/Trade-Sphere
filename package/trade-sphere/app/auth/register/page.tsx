@@ -21,6 +21,11 @@ const Register = () => {
       const { data: userData, error } = await superbase.auth.signUp({
         email: data.email,
         password: data.password,
+        options: {
+          data: {
+            name: data.name,
+          },
+        },
       });
 
       if (error) {
