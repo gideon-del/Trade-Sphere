@@ -1,7 +1,9 @@
 "use client";
 import { registerUserSchema } from "@/lib/form-schemas";
+import superbase from "@/lib/superbase";
 import { RegisterUser } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AuthError } from "@supabase/supabase-js";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -16,12 +18,19 @@ const Register = () => {
   });
   const submitHandler = async (data: RegisterUser) => {
     try {
-      const user = await fetch("/api/auth/register", {
-        method: "post",
-        body: JSON.stringify({ email: data.email, password: data.password }),
+      const { data: userData, error } = await superbase.auth.signUp({
+        email: data.email,
+        password: data.password,
       });
-      const res = await user.json();
-      console.log(res);
+
+      if (error) {
+        console.log(error);
+        return;
+      }
+      const { user } = userData;
+      const { password, ...rest } = data;
+      const finalData = await superbase.from("vendor").insert(rest);
+      console.log(finalData, user);
     } catch (error) {
       console.log(error);
     } finally {
