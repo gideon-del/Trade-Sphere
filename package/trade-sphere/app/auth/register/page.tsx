@@ -18,12 +18,14 @@ const Register = () => {
   });
   const submitHandler = async (data: RegisterUser) => {
     try {
+      const { email, password, ...rest } = data;
       const { data: userData, error } = await superbase.auth.signUp({
-        email: data.email,
-        password: data.password,
+        email,
+        password,
         options: {
           data: {
-            name: data.name,
+            ...rest,
+            is_vendor: true,
           },
         },
       });
@@ -32,14 +34,6 @@ const Register = () => {
         console.log(error);
         return;
       }
-      const { user } = userData;
-      const { password, bussiness_name, email } = data;
-      const finalData = await superbase.from("vendor").insert({
-        bussiness_name,
-        user_id: user?.id,
-        email,
-      });
-      console.log(finalData, user);
     } catch (error) {
       console.log(error);
     } finally {
