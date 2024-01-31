@@ -5,6 +5,7 @@ import { RegisterUser } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { registerUser } from "../actions";
 
 const Register = () => {
   const {
@@ -17,22 +18,7 @@ const Register = () => {
   });
   const submitHandler = async (data: RegisterUser) => {
     try {
-      const { email, password, ...rest } = data;
-      const { data: userData, error } = await superbase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            ...rest,
-            is_vendor: true,
-          },
-        },
-      });
-
-      if (error) {
-        console.log(error);
-        return;
-      }
+      await registerUser(data);
     } catch (error) {
       console.log(error);
     } finally {

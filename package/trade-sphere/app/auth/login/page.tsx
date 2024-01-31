@@ -4,6 +4,7 @@ import superbase from "@/lib/superbase";
 import { LoginUser } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { loginUser } from "../actions";
 const Login = () => {
   const {
     handleSubmit,
@@ -15,15 +16,7 @@ const Login = () => {
   });
   const submitHandler = async (loginDetail: LoginUser) => {
     try {
-      const { data, error } = await superbase.auth.signInWithPassword({
-        email: loginDetail.email,
-        password: loginDetail.password,
-      });
-      if (error) {
-        console.log(error);
-        return;
-      }
-      console.log(data);
+      await loginUser(loginDetail);
     } catch (error) {
       console.log(error);
     }

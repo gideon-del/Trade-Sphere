@@ -11,7 +11,6 @@ const Products = () => {
         image 
         (id, 
         url)`);
-      console.log(products);
     };
     getProducts();
   }, []);
