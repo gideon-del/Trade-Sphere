@@ -1,5 +1,6 @@
 "use client";
 import superbase from "@/lib/superbase";
+import Image from "next/image";
 import React, { useState } from "react";
 
 const AddProduct = () => {
@@ -15,7 +16,7 @@ const AddProduct = () => {
         .from("trade-sphere-images")
         .upload(`${Date.now()}trade-sphere`, e.target.files[0]);
       if (error) {
-        console.log(error);
+        console.error(error);
         return;
       }
       const {
@@ -73,6 +74,17 @@ const AddProduct = () => {
             className="px-2 py-4 rounded-md border border-black"
           ></select>
         </fieldset>
+        <figure>
+          {imageUrls.map((imageUrl) => (
+            <Image
+              src={imageUrl}
+              alt="Product Image"
+              width={300}
+              height={300}
+              key={imageUrl}
+            />
+          ))}
+        </figure>
         <fieldset className="flex gap-4 items-start">
           <label htmlFor="Images">Image</label>
           <input type="file" onChange={hanldeImageChange} accept="image/*" />
