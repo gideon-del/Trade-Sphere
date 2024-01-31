@@ -5,3 +5,7 @@ export type RegisterUser = {
   bussiness_logo?: string;
   password: string;
 };
+export type LoginUser = {
+  email: string;
+  password: string;
+};

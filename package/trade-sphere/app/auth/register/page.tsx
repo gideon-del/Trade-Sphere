@@ -3,7 +3,6 @@ import { registerUserSchema } from "@/lib/form-schemas";
 import superbase from "@/lib/superbase";
 import { RegisterUser } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthError } from "@supabase/supabase-js";
 import React from "react";
 import { useForm } from "react-hook-form";
 
