@@ -1,6 +1,31 @@
-import React from "react";
+"use client";
+import superbase from "@/lib/superbase";
+import React, { useState } from "react";
 
 const AddProduct = () => {
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const hanldeImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    try {
+      const currentFile = e.target.files[0];
+      if (!currentFile.type.includes("image/")) {
+        console.log("This is not an image");
+      }
+      const { data, error } = await superbase.storage
+        .from("trade-sphere-images")
+        .upload(`${Date.now()}trade-sphere`, e.target.files[0]);
+      if (error) {
+        console.log(error);
+        return;
+      }
+      const {
+        data: { publicUrl },
+      } = superbase.storage.from("trade-sphere-images").getPublicUrl(data.path);
+      setImageUrls((prev) => [...prev, publicUrl]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <main>
       <form className="flex flex-col gap-8">
@@ -50,7 +75,7 @@ const AddProduct = () => {
         </fieldset>
         <fieldset className="flex gap-4 items-start">
           <label htmlFor="Images">Image</label>
-          <input type="file" hidden />
+          <input type="file" onChange={hanldeImageChange} accept="image/*" />
         </fieldset>
       </form>
     </main>
