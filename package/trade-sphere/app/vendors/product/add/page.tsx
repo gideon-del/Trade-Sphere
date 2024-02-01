@@ -1,11 +1,12 @@
 "use client";
 import { addProductSchema } from "@/lib/form-schemas";
-import superbase from "@/lib/superbase";
 import { AddProductForm } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { addProduct } from "../actions";
+import { createClient } from "@/lib/superbase-ssr/client";
 
 const AddProduct = () => {
   const { handleSubmit, register } = useForm<AddProductForm>({
@@ -21,6 +22,7 @@ const AddProduct = () => {
       if (!currentFile.type.includes("image/")) {
         console.log("This is not an image");
       }
+      const superbase = createClient();
       const { data, error } = await superbase.storage
         .from("trade-sphere-images")
         .upload(`${Date.now()}trade-sphere`, e.target.files[0]);
@@ -38,24 +40,11 @@ const AddProduct = () => {
   };
   const submitHandler = async (productInfo: AddProductForm) => {
     try {
-      const user = await superbase.auth.getUser();
-
-      const product = await superbase
-        .from("products")
-        .insert({
-          ...productInfo,
-          vendor_id: user.data.user?.id,
-        })
-        .select("*");
-      if (product.data === null) {
+      if (imageUrls.length === 0) {
+        console.log("No image selected");
         return;
       }
-      console.log(product);
-      const transformedImage = imageUrls.map((imageUrl) => ({
-        url: imageUrl,
-        product_id: product?.data[0]?.id,
-      }));
-      await superbase.from("image").insert(transformedImage);
+      await addProduct(productInfo, imageUrls);
     } catch (error) {
       console.error(error);
     }
@@ -63,6 +52,7 @@ const AddProduct = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
+        const superbase = createClient();
         const categories = await superbase.from("category").select("*");
         const typedCategory = [...categories.data!] as any[];
         setCategories(typedCategory);
