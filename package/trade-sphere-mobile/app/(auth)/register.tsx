@@ -1,12 +1,54 @@
-import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  AppState,
+  Alert,
+} from "react-native";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Formik } from "formik";
 import { registerSchema } from "@/lib/validtion-schemas";
-
+import { supabase } from "@/lib/superbase";
+import { RegisterCustomer } from "@/lib/types";
+AppState.addEventListener("change", (state) => {
+  if (state === "active") {
+    supabase.auth.startAutoRefresh();
+  } else {
+    supabase.auth.stopAutoRefresh();
+  }
+});
 const Register = () => {
   const { top, bottom } = useSafeAreaInsets();
-
+  const submitHandler = async (data: RegisterCustomer) => {
+    try {
+      const { data: userData, error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            phone_number: data.phone_number,
+            is_vendor: false,
+          },
+        },
+      });
+      if (error) {
+        console.error(error);
+        return;
+      }
+      Alert.alert(
+        "Account Created",
+        `Please vist your email to verify your account`
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  };
   return (
     <View
       style={[
@@ -24,7 +66,7 @@ const Register = () => {
           phone_number: "",
           password: "",
         }}
-        onSubmit={(data) => console.log(data)}
+        onSubmit={submitHandler}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <>
