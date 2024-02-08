@@ -13,6 +13,7 @@ import { Formik } from "formik";
 import { registerSchema } from "@/lib/validtion-schemas";
 import { supabase } from "@/lib/superbase";
 import { RegisterCustomer } from "@/lib/types";
+import { Link } from "expo-router";
 AppState.addEventListener("change", (state) => {
   if (state === "active") {
     supabase.auth.startAutoRefresh();
@@ -56,7 +57,7 @@ const Register = () => {
         styles.container,
       ]}
     >
-      <Text style={styles.mainTitle}>Create account</Text>
+      <Text style={styles.mainTitle}>Sign Up</Text>
       <Formik
         validationSchema={registerSchema}
         initialValues={{
@@ -115,6 +116,7 @@ const Register = () => {
           </>
         )}
       </Formik>
+      <Link href={"/(auth)/login"}>Sign In</Link>
     </View>
   );
 };

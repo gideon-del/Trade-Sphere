@@ -5,3 +5,8 @@ export type RegisterCustomer = {
   email: string;
   password: string;
 };
+
+export type LoginCustomer = {
+  email: string;
+  password: string;
+};
