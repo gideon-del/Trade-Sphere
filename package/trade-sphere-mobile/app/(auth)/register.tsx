@@ -14,6 +14,7 @@ import { registerSchema } from "@/lib/validtion-schemas";
 import { supabase } from "@/lib/superbase";
 import { RegisterCustomer } from "@/lib/types";
 import { Link } from "expo-router";
+import withOutAuth from "@/lib/withOutAuth";
 AppState.addEventListener("change", (state) => {
   if (state === "active") {
     supabase.auth.startAutoRefresh();
@@ -155,4 +156,4 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 });
-export default Register;
+export default withOutAuth(Register);

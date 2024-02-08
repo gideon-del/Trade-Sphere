@@ -1,5 +1,6 @@
 import { View, Text, Pressable } from "react-native";
 import React from "react";
+import withOutAuth from "@/lib/withOutAuth";
 
 const Verification = () => {
   return (
@@ -11,4 +12,4 @@ const Verification = () => {
   );
 };
 
-export default Verification;
+export default withOutAuth(Verification);
