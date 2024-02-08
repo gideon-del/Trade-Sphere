@@ -1,5 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
+import withAuth from "@/lib/withAuth";
 
 const HomeScreen = () => {
   return (
@@ -9,4 +10,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default withAuth(HomeScreen);

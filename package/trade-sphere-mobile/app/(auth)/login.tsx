@@ -6,6 +6,8 @@ import { loginSchema } from "@/lib/validtion-schemas";
 import { Link, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { supabase } from "@/lib/superbase";
+import withAuth from "@/lib/withAuth";
+import withOutAuth from "@/lib/withOutAuth";
 const initialValues = {
   email: "",
   password: "",
@@ -106,4 +108,4 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 });
-export default Login;
+export default withOutAuth(Login);

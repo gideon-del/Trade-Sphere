@@ -12,7 +12,7 @@ const Profile = () => {
   return (
     <View>
       <Text>Profile</Text>
-      <Pressable>
+      <Pressable onPress={() => logout()}>
         <Text>Logout</Text>
       </Pressable>
     </View>
